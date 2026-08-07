@@ -4,7 +4,7 @@ import random
 # импортируем класс для создания экземпляра FastAPI-приложения
 from fastapi import FastAPI
 
-from app.fastapi_handler_regression import FastApiHandler
+from app.fast_api_handler import FastApiHandler
 
 # создаём экземпляр FastAPI-приложения
 app = FastAPI()
@@ -38,14 +38,16 @@ def is_credit_approved_old(client_id: str):
         return {"approved": 0}
 
 
-@app.post("/api/credit/")
-def is_credit_approved(client_id: str, model_params: dict) -> dict:
-    all_params = {"client_id": client_id, "model_params": model_params}
-    print(f"Received request with parameters: {all_params}")
-    user_prediction = app.handler.handle(all_params)
-    score = user_prediction["predicted_credit_rating"]
-    if score > 600:
-        approved = 1
-    else:
-        approved = 0
-    return {"client_id": client_id, "approved": approved}
+@app.post("/api/churn/")
+def get_prediction_for_item(user_id: str, model_params: dict):
+    """Функция для получения вероятности оттока пользователя.
+
+    Args:
+        user_id (str): Идентификатор пользователя.
+        model_params (dict): Параметры пользователя, которые нужно передать в модель.
+
+    Returns:
+        dict: Предсказание, уйдёт ли пользователь из сервиса.
+    """
+    all_params = {"user_id": user_id, "model_params": model_params}
+    return app.handler.handle(all_params)

@@ -79,6 +79,8 @@ class FastApiHandler:
             bool: True — если есть нужные параметры, False — иначе
         """
         # if set(model_params.keys()) == set(self.required_model_params):
+        print(f"Required model params: {self.required_model_params}")
+        print(f"Received model params: {list(model_params.keys())}")
         if set(self.required_model_params).issubset(set(model_params.keys())):
             return True
         return False
@@ -98,6 +100,7 @@ class FastApiHandler:
         else:
             print("Not all query params exist")
             return False
+        print(f"params: {params}")
 
         if self.check_required_model_params(params["model_params"]):
             print("All model params exist")
