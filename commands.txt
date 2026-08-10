@@ -1,0 +1,1 @@
+docker container run --publish 4601:8081 --volume=./models:/churn_app/models  <image-name>
