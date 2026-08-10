@@ -1,0 +1,25 @@
+#cначала узнайте id работающего контейнера с помощью команды:
+
+docker container ps 
+#-> CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+#-> 1995558135af   simple_fast_api:3   "/bin/sh -c 'uvicorn…"   4 minutes ago   Up 4 minutes   0.0.0.0:4600->1702/tcp, :::4600->1702/tcp   romantic_matsumoto
+
+# а затем остановите запущенный контейнер
+docker container stop <id вашего контейнера>
+
+# docker container stop 1995558135af
+docker image build . --tag simple_fast_api:2
+docker container run --publish 4600:1702 simple_fast_api:2
+
+docker image build . --tag simple_fast_api:with_volume
+docker container run --publish 4600:1702 --volume=./speeches:/simple_fast_api/speeches simple_fast_api:with_volume
+
+docker image build . --tag simple_fast_api:with_env
+
+# перед запуском нового контейнера не забудьте выключить старый
+docker container ps
+docker container stop <id>
+
+# запускаем контейнер
+docker container run --publish 4600:1702 --env-file .env --volume=./speeches:/simple_fast_api/speeches  simple_fast_api:with_env
+# добавляем флаг --env-file и указываем, из какого файла брать перменные среды
