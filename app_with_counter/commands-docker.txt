@@ -1,0 +1,6 @@
+docker image build . --file Dockerfile_counter --tag app_with_counter:counter
+docker image build . --file Dockerfile_main --tag app_with_counter:main
+
+docker container run --name main_app -d --network host  --env-file .env app_with_counter:main
+docker container run --publish 4649:1602 --name counter -d --env-file .env app_with_counter:counter
+docker container run --publish 4648:1702 --name sprint3_main_app -d --env-file .env app_with_counter:main
